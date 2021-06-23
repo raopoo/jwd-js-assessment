@@ -22,9 +22,27 @@
 window.addEventListener('DOMContentLoaded', () => {
   const start = document.querySelector('#start');
   start.addEventListener('click', function (e) {
+    setInterval(countDown, 1000);
     document.querySelector('#quizBlock').style.display = 'block';
     start.style.display = 'none';
   });
+  //Function for timer
+  let startingMin = 1;
+  let time = startingMin * 60;
+  const cdDisplay = document.querySelector("#time");
+  const countDown = () => {
+    let min = Math.floor(time / 60);
+    let sec = time % 60;
+    sec = sec < 1 ? '0' + sec : sec;
+    cdDisplay.innerHTML =`${min}:${sec}`;
+    time--;
+    time =  time < 0 ? 0 : time;
+    if(time === 0){
+      calculateScore();
+    }
+};
+
+
   // quizArray QUESTIONS & ANSWERS
   // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
   // Basic ideas from https://code-boxx.com/simple-javascript-quiz/
@@ -40,11 +58,22 @@ window.addEventListener('DOMContentLoaded', () => {
       a: 3,
     },
     {
-      q: 'What is the capital of Australia',
+      q: 'What is the capital of Australia?',
       o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
       a: 1,
     },
+    {
+      q: 'What is the capital of New Zeland?',
+      o: ['Auckland', 'Queenstown', 'Wellington', 'Christchurch'],
+      a: 2,
+    },
+    {
+      q: 'What is the most populated state in Australia?',
+      o: ['New South Wales', 'Victoria', 'South Australia', 'Queensland'],
+      a: 0,
+    }
   ];
+ 
 
   // function to Display the quiz questions and answers from the object
   const displayQuiz = () => {
@@ -62,29 +91,44 @@ window.addEventListener('DOMContentLoaded', () => {
       quizWrap.innerHTML = quizDisplay;
     });
   };
-
+  
   // Calculate the score
   const calculateScore = () => {
+    //alert("calculateScore() is called");
     let score = 0;
     quizArray.map((quizItem, index) => {
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i <= 4; i++) {
         //highlight the li if it is the correct answer
         let li = `li_${index}_${i}`;
         let r = `radio_${index}_${i}`;
-        liElement = document.querySelector('#' + li);
-        radioElement = document.querySelector('#' + r);
+        let scoreDisp = document.querySelector('#score');
+        let liElement = document.querySelector("#"+ li);
+        let radioElement = document.querySelector("#"+ r);
 
-        if (quizItem.a == i) {
+         if (quizItem.a === i) {
           //change background color of li element here
+          liElement.style.backgroundColor = "blue";
         }
-
-        if (radioElement.checked) {
-          // code for task 1 goes here
-        }
+        // if (radioElement.checked) {
+        //  // code for task 1 goes here
+        //  score++;     
+        //  scoreDisp.innerHTML = `You have scored ${score}`;      
+        // }
       }
     });
-  };
+};  
+ // call the displayQuiz function
+displayQuiz();
+  //Call the event listner for submit button
+let submitBtn = document.querySelector("#btnSubmit");
+  submitBtn.addEventListener('click', e => {
+   //alert("submit was clicked");
+    calculateScore();
+  });
 
-  // call the displayQuiz function
+//Reset button even listner
+let resetBtn = document.querySelector("#btnReset")
+resetBtn.addEventListener('click',e => {
   displayQuiz();
+ });
 });
