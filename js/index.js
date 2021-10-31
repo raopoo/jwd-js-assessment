@@ -97,23 +97,26 @@ window.addEventListener('DOMContentLoaded', () => {
     //alert("calculateScore() is called");
     let score = 0;
     quizArray.map((quizItem, index) => {
-      for (let i = 0; i <= 4; i++) {
+      for (let i = 0; i < 4; i++) {
         //highlight the li if it is the correct answer
         let li = `li_${index}_${i}`;
+        //console.log(li);
         let r = `radio_${index}_${i}`;
+        //console.log(r);
         let scoreDisp = document.querySelector('#score');
         let liElement = document.querySelector("#"+ li);
         let radioElement = document.querySelector("#"+ r);
-
+        // console.log(liElement);
+        // console.log(radioElement);
          if (quizItem.a === i) {
-          //change background color of li element here
-          liElement.style.backgroundColor = "blue";
+           //change background color of li element here
+           liElement.style.backgroundColor = "blue";
+         }
+        if (radioElement.checked && quizItem.a === i) {
+         // code for task 1 goes here
+         score++;        
         }
-        // if (radioElement.checked) {
-        //  // code for task 1 goes here
-        //  score++;     
-        //  scoreDisp.innerHTML = `You have scored ${score}`;      
-        // }
+        scoreDisp.innerHTML = `You have scored ${score}`;   
       }
     });
 };  
@@ -129,6 +132,6 @@ let submitBtn = document.querySelector("#btnSubmit");
 //Reset button even listner
 let resetBtn = document.querySelector("#btnReset")
 resetBtn.addEventListener('click',e => {
-  displayQuiz();
+  window.location.reload();
  });
 });
